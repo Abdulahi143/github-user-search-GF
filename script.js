@@ -6,7 +6,7 @@ const userInfoContainer = document.getElementById('user-info');
 
 // fetching the data from githubs api 
 async function fetchUserInfo(username) {
-    try {
+    try {         
         const response = await fetch(`https://api.github.com/users/${username}`); //template literal
         const userInfo = await response.json();    
         return userInfo;
@@ -18,8 +18,11 @@ async function fetchUserInfo(username) {
 // displaying the user info on the container
 function displayUserInfo(userInfo) {
     if (!userInfo) {
-        userInfoContainer.innerHTML = "<p>No user found</p>";
+        userInfoContainer.innerHTML = "<p>No user found</p>";        
         return;
+    }else if (userInfo.name === undefined) {
+        userInfoContainer.innerHTML = "<p>No user found</p>";  
+        return; 
     }
 
 const display = `
@@ -43,7 +46,6 @@ async function handleSearch() {
         userInfoContainer.innerHTML = "<p>Please enter a username</p>";
         return;
     }
-
     const userInfo = await fetchUserInfo(username);
     displayUserInfo(userInfo);    
 }
@@ -52,13 +54,12 @@ async function handleSearch() {
 searchButton.addEventListener('click', handleSearch);
 
 //add key press event listener to the search input
-searchInput.addEventListener('keypress', function(event) {
-    if(event.key === 'Enter') {
-        handleSearch();
-    }
+searchInput.addEventListener('keyup', function(event) {
+    // if(event.key === 'Enter') {
+    //     handleSearch();
+    // }
+    handleSearch();
 });
-
-
 
 
 
